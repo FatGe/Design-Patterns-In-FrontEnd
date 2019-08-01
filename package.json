@@ -1,0 +1,29 @@
+{
+  "name": "design-patterns-in-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node fragments/abstract-factory.ts",
+    "lint:ts": "tslint --fix 'fragments/**/*.ts'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FatGe/Design-Patterns-In-FrontEnd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FatGe/Design-Patterns-In-FrontEnd/issues"
+  },
+  "homepage": "https://github.com/FatGe/Design-Patterns-In-FrontEnd#readme",
+  "devDependencies": {
+    "ts-node": "^8.3.0",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@types/core-js": "^2.5.2"
+  }
+}
