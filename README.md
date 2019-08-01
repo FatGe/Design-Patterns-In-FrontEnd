@@ -1,14 +1,16 @@
 # Design Patterns In FE
 
+## 创建型模式
+
 ### 工厂模式
 
-工厂，是构造方法的抽象，用来实现不同的分配方案。
+工厂，是**构造方法**的抽象，用来实现不同的分配方案。它所涉及三类模式，简单工厂模式、工厂方法模式、抽象工厂模式本质上都是为了**实例化**。
 
 #### 简单工厂模式（Simple Factory）
 
-> 简单工厂模式就是**抽象了创建具体对象的过程**。	
-
 简单工厂模式也被称为**静态**工厂方法，它可以根据**参数的不同**来返回**不同类**的实例。
+
+> 简单工厂模式就是**抽象了创建具体实例的过程**。
 
 想象下，存在一个蛋糕厂，当你需要一个巧克力蛋糕时，它会创建一个巧克力蛋糕，同样，当你需要冰淇凌口味的，它就会返回一个冰淇淋蛋糕。也就是说这个工厂创建的蛋糕（实例）取决于你的口味（参数）。
 
@@ -32,7 +34,7 @@ class CakeFactory {
 }
 ```
 
-在实际应用工厂模式的时候，会定义**一类工厂**来负责实例的创建，而这些实例通常都具有**共同的父类**。就像 `ChocolateCake`、`IcecreamCake` 都是继承于 `Cake`。
+在实际应用简单工厂模式的时候，会定义**一类工厂**来负责实例的创建，而这些实例通常都具有**共同的父类**。就像 `ChocolateCake`、`IcecreamCake` 都是继承于 `Cake`。
 
 ##### 什么时候使用？
 
@@ -40,7 +42,7 @@ class CakeFactory {
 
 例如在上述代码中，默认对 `chocolate` 以及 `icecream` 蛋糕的尺寸（`size`）做了限制。它代表的是，当**创建实例需要大量重复代码**时，可以考虑将其封装到简单工厂模式内。
 
-还有，在创建 `icecream` 蛋糕时，对其口味（`flavor`）做了处理，这样就**解耦了实例的创建以及它所涉及的业务逻辑**，如果需要添加其他的逻辑时，只需要在对应的作用域内添加代码即可。
+还有，在创建 `icecream` 蛋糕时，对其口味（`flavor`）做了处理，这样就**解耦了实例的创建以及它所涉及的业务逻辑**。
 
 ##### 优劣势
 
@@ -52,7 +54,7 @@ class CakeFactory {
 
 > 在[面向对象编程](https://baike.baidu.com/item/面向对象编程)领域中，**开闭原则**规定“*软件中的对象（类，模块，函数等等）应该对于扩展是开放的，但是对于修改是封闭的*”，这意味着一个实体是允许在不改变它的[源代码](https://baike.baidu.com/item/源代码)的前提下变更它的行为。
 
-##### 变形以及实例
+##### 实际应用
 
 思考一个场景，如果你需要控制系统中所有 `Cake` 的生命周期，同时同类的 `Cake` 只能存在一个，你会怎么处理？
 
@@ -99,7 +101,7 @@ function createComponent (
   // cache 相应的 baseCtor
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)
-  }   
+  }
   // input Component 的相关 options
   const name = Ctor.options.name || tag
   // 实例化 Vnode
@@ -120,17 +122,17 @@ function createComponent (
 
 ```js
 Vue.extend = function (extendOptions: Object): Function {
-    extendOptions = extendOptions || {}
-    const SuperId = Super.cid
-	// get cache
-    if (cachedCtors[SuperId]) {
-      return cachedCtors[SuperId]
-    }
-    // ...
-    // cache constructor
-    cachedCtors[SuperId] = Sub
-    return Sub
+  extendOptions = extendOptions || {}
+  const SuperId = Super.cid
+  // get cache
+  if (cachedCtors[SuperId]) {
+    return cachedCtors[SuperId]
   }
+  // ...
+  // cache constructor
+  cachedCtors[SuperId] = Sub
+  return Sub
+}
 ```
 
 可以看出，`create-component` 的整体逻辑与示例 `CakeFactory` 大体相同，只是实现上略有差异。
@@ -148,13 +150,15 @@ Vue.extend = function (extendOptions: Object): Function {
 
 工厂方法模式（Factory Method Pattern）针对以上两个点进行了优化。在工厂方法模式中，会有一个**工厂父类**用于**定义创建实例的接口**，让其**子类决定具体的实例化**。
 
-> 根据设计模式一书中的描述，工厂方法模式就是将一个类的实例化延迟到其子类。
+> 工厂方法模式就是将一个类的实例化延迟到其子类。
+>
+> ----设计模式
 
 看起来**子类的工厂方法**与其**构造函数**非常的类似。它又称为工厂模式，也叫虚拟构造器（Virtual Constructor）模式或者多态工厂（Polymorphic Factory）模式。
 
 之前在简单工厂模式中实现的一个 `CakeFactory` 类用于创建 `Cake`，其实它可以视为 `chocCakeCakeFactory` 、`icecreamCakeFactory` 的组合。
 
-![工厂方法配图](C:\Users\Gepangz\Desktop\Blog\工厂方法配图.png)
+![工厂方法配图](https://github.com/FatGe/Design-Patterns-In-FrontEnd/blob/master/static/factory-method.png)
 
 那么现在将 `Cake Factory` 抽象为父类，同时定义一个 `produce` 的接口，用于生产 `Cake`
 
@@ -164,7 +168,7 @@ abstract class CakeFactory {
 }
 ```
 
-此时抽象类 `CakeFactory` 与 `Cake` 对应，但是 `CakeFactory` 的 `produce` 接口只是说明会创建一个 `Cake`，但具体并不清楚**具体是哪一个**。然后实现具体的子类`chocCakeCakeFactory` 、 `icecreamCakeFactory` 
+此时抽象类 `CakeFactory` 与 `Cake` 对应，但是 `CakeFactory` 的 `produce` 接口只是说明会创建一个 `Cake`，但具体并不清楚**具体是哪一个**。然后实现具体的子类`chocCakeCakeFactory` 、`icecreamCakeFactory` 
 
 ```typescript
 class ChocCakeFactory extends CakeFactory {
@@ -197,9 +201,9 @@ class IcecreamChef extends CakeFactory {
 - 缺点：
   - 由于工厂方法模式将具体实例与子类一一对应，使得类的个数将成对增加，这样就会有更多的类需要编译和运行，会带来一些额外的开销。
 
-##### 变形以及实例
+##### 实际应用
 
-虽然工厂方法模式的核心是**允许子类创建对应实例**，但是有时候也会不使用多态性来实现的工厂方法，例如
+虽然工厂方法模式的核心是**允许子类创建对应实例**，但是有时候也会不使用多态性来实现，例如
 
 ```js
 class SubCake extends Cake {
@@ -216,7 +220,6 @@ class SubCake extends Cake {
         super(material);
         this.size = size;
     }
-
 }
 ```
 
@@ -260,7 +263,6 @@ export default class Watcher {
       : ''
     // ...
   }
-   
   // ...
 }
 ```
@@ -303,6 +305,8 @@ class Watcher {
 之前已经创建了 `Cake`，相应的应该存在 `Pack`，它们在数量上应该是一一对应的，且具有一定的关联性（可以视为同一产品族）。
 
 > **产品族**：在抽象工厂模式中，产品族是指由同一个工厂生产的，位于不同产品等级结构中的一组产品。
+>
+> ----设计模式
 
 ```typescript
 class Pack {
@@ -336,7 +340,7 @@ class BirthdayCakeFactory extends Factory {
 }
 ```
 
-如果使用之前的工厂方法模式，你可能需要创建相关的 `CakeFactory` 以及 `PackFactory` 来处理这种多个位于不同等级结构中属于不同类型的具体产品的情景。
+如果使用之前的工厂方法模式，你可能需要创建相关的 `CakeFactory` 以及 `PackFactory` 来处理这种情景。
 
 ##### 什么时候使用？
 
@@ -349,7 +353,7 @@ class BirthdayCakeFactory extends Factory {
 - 缺点：
   - 不难看出，如果需要增加新的产等级结构会导致抽象工厂的子类都需要进行更改。
 
-##### 变形以及实例
+##### 实际场景
 
 在前端业务中，抽象工厂模式使用的场景太多了。例如当你需要实现一套通用组件库需要兼顾不同的游览器时，可以选择通过抽象工厂模式来对功能、逻辑进行抽象，在利用不同的工厂函数去处理。
 
@@ -361,4 +365,4 @@ class BirthdayCakeFactory extends Factory {
 >
 > 而当工厂方法模式中抽象工厂与具体工厂合并，提供一个统一的工厂来创建产品对象，并将创建对象的工厂方法设计为静态方法时，工厂方法模式退化成简单工厂模式。
 >
-> ​																							---------(图解设计模式)
+> ----图解设计模式
