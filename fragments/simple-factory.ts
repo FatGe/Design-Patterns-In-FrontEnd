@@ -39,12 +39,12 @@ export class IcecreamCake extends Cake {
 }
 
 class CakeFactory {
-    protected static cache: Map<string, Cake> = new Map();
     public static CakeFactory(cakeType: string): Cake {
         const size: number = 8;
-        let cake: Cake = this.cache.get(cakeType)
+        let cake: Cake = this.cache.get(cakeType);
 
-        if (cake) return cake
+        if (cake) { return cake; }
+
         switch (cakeType) {
             case "choc": {
                 cake = new ChocCake(size);
@@ -58,6 +58,7 @@ class CakeFactory {
         this.cache.set(cakeType, cake);
         return cake;
     }
+    protected static cache: Map<string, Cake> = new Map();
 }
 
 console.log(CakeFactory.CakeFactory("icecream"));

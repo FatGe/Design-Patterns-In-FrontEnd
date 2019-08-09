@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node fragments/abstract-factory.ts",
+    "dev": "ts-node fragments/prototype.ts",
     "lint:ts": "tslint --fix 'fragments/**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,6 +24,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@types/core-js": "^2.5.2"
+    "@types/core-js": "^2.5.2",
+    "cloneable-ts": "^1.0.18"
   }
 }
