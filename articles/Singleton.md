@@ -1,6 +1,4 @@
-# Design Patterns In FE -- 单例模式
-
-### 单例模式
+#### 单例模式
 
 单例模式（Singleton Pattern）本质上是在**全局**维护的一个**唯一**的类的实例。
 
@@ -20,7 +18,7 @@ class Menu {
         return Menu.instance;
     }
     private static instance = new Menu();
-	// 防止其他处 new Menu()
+    // 防止其他处 new Menu()
     private constructor() {}
 }
 ```

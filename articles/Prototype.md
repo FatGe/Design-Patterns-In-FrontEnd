@@ -1,6 +1,4 @@
-# Design Patterns In FE -- 原型模式
-
-### 原型模式
+#### 原型模式
 
 原型模式（Singleton Pattern）的特点在于“复制”，通过复制一个已经存在的实例来返回新的实例，而不是新建实例。
 
@@ -59,8 +57,7 @@ class PrototypeFactory {
             }
         }
     }
-    protected static subject: Prototype = 
-    	new Prototype({ name: "Alice", age: 28 });
+    protected static subject: Prototype = new Prototype({ name: "Alice", age: 28 });
 }
 ```
 
@@ -102,7 +99,6 @@ personB.printIntroduction(); // My name is Mike
 
 ```js
 Object.create = function (proto) {
-    
     function F() {}
     F.prototype = proto;
 
